@@ -1,0 +1,127 @@
+﻿@page "/Credits";
+@using SpaceTraders.Loans
+@using SpaceTraders.LoanedLoans
+@inject AppState appState
+
+<h3>Credits</h3>
+
+<h4>Avaible Loans</h4>
+
+@if (avaibleLoans is not null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center">Type</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Collateral</th>
+                <th class="text-center">Rate</th>
+                <th class="text-center">Term in days</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (LoanDTO loan in avaibleLoans.Loans)
+            {
+                <tr>
+                    <td class="text-center">
+                        @loan.Type
+                    </td>
+                    <td class="text-center">
+                        @loan.Amount
+                    </td>
+                    <td class="text-center">
+                        @if (loan.CollateralRequired)
+                        {
+                            <p>Yes</p>
+                        }
+                        else
+                        {
+                            <p>No</p>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @loan.Rate
+                    </td>
+                    <td class="text-center">
+                        @loan.TermInDays
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-primary" @onclick="() => Loan(loan.Type)">Loan</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else {
+<p>loading...</p>
+}
+
+<h4>Loaned Loans</h4>
+
+@if (loanedLoans is not null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center">Type</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Term in days</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Loan loan in loanedLoans.Loans)
+            {
+                <tr>
+                    <td class="text-center">
+                        @loan.Type
+                    </td>
+                    <td class="text-center">
+                        @loan.RepaymentAmount
+                    </td>
+                    <td class="text-center">
+                        @loan.Status
+                    </td>
+                    <td class="text-center">
+                        @loan.DueDays()
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-primary" @onclick="() => PayBack(loan.Id)">Payback</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+else
+{
+    <p>loading...</p>
+}
+
+@code {
+    AvaibleLoansDTO? avaibleLoans;
+    LoanedLoansDTO? loanedLoans;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        avaibleLoans = await Api.GetAvaibleLoans();
+        loanedLoans = await Api.GetLoanedLoans();
+    }
+
+    private async Task Loan(string type)
+    {
+        Api.PostLoans(type);
+        appState.MyAccount = await Api.GetMyAccount();
+    }
+
+    private async Task PayBack(string id)
+    {
+        Api.PutPayBack(id);
+        appState.MyAccount = await Api.GetMyAccount();
+    }
+}

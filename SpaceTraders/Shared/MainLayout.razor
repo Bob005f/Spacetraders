@@ -1,0 +1,50 @@
+﻿@inherits LayoutComponentBase
+@using SpaceTraders
+@using SpaceTraders.Userdata;
+@inject AppState appState
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            @if (appState.MyAccount is not null)
+          {
+            <div class="container text-center">
+              <div class = "row">
+                <div class = "col"><span class="oi oi-person" aria-hidden="true"></span>
+                @appState.MyAccount.User.Username </div>
+                <div class = "col"><span class="oi oi-home" aria-hidden="true"></span>
+                @appState.MyAccount.User.StructureCount </div>
+                <div class = "col"><span class="oi oi-credit-card" aria-hidden="true"></span>
+                @appState.MyAccount.User.Credits </div>
+                <div class="col"><span class="oi oi-location" aria-hidden="true"></span>
+                @appState.MyAccount.User.ShipCount </div>
+              </div>
+            </div>
+          }
+          else {
+            <p>loading</p>
+          }
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        appState.MyAccount = await Api.GetMyAccount();
+        appState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        appState.OnChange -= StateHasChanged;
+    }
+}
