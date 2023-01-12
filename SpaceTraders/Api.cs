@@ -33,7 +33,7 @@ namespace SpaceTraders
 
     public static async void TakeLoan(string type)
     {
-      await _httpClient.GetAsync($"my/loans?{Token}&type={type}");
+      await _httpClient.PostAsync($"my/loans?{Token}&type={type}", null);
     }
 
     public static async Task<LoanedLoansDTO> GetLoanedLoans()
