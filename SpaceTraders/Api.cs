@@ -56,7 +56,7 @@ namespace SpaceTraders
     }
     public static async Task<MessageDto> BuyShip(string location, string type)
     {
-      string Type = "type=" + type;
+
       HttpResponseMessage response = await
         _httpClient.PostAsync($"my/ships?{Token}&location={location}&type={type}", null);
 
