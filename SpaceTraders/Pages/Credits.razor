@@ -115,13 +115,13 @@ else
 
     private async Task Loan(string type)
     {
-        Api.PostLoans(type);
+        Api.TakeLoan(type);
         appState.MyAccount = await Api.GetMyAccount();
     }
 
     private async Task PayBack(string id)
     {
-        Api.PutPayBack(id);
+        Api.LoanPayBack(id);
         appState.MyAccount = await Api.GetMyAccount();
     }
 }

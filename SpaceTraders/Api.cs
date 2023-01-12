@@ -31,11 +31,9 @@ namespace SpaceTraders
       return await response.Content.ReadFromJsonAsync<AvaibleLoansDTO>();
     }
 
-    public static async void PostLoans(string type)
+    public static async void TakeLoan(string type)
     {
-      string Type = "type=" + type;
-      HttpResponseMessage response = await
-        _httpClient.PostAsync($"my/loans?{Token}&{Type}", null);
+      await _httpClient.GetAsync($"my/loans?{Token}&type={type}");
     }
 
     public static async Task<LoanedLoansDTO> GetLoanedLoans()
@@ -45,11 +43,9 @@ namespace SpaceTraders
       return await response.Content.ReadFromJsonAsync<LoanedLoansDTO>();
     }
 
-    public static async void PutPayBack(string id)
+    public static async void LoanPayBack(string id)
     {
-      string token = "token=0ce8d217-4160-4623-af86-b2d7432e8897";
-      HttpResponseMessage response = await
-        _httpClient.PutAsync($"my/loans/{id}?{token}", null);
+       await _httpClient.PutAsync($"my/loans/{id}?{Token}", null);
     }
 
     public static async Task<AvailableShipsDTO> GetAvailableShips()
