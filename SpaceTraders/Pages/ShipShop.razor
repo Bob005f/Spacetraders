@@ -1,5 +1,24 @@
 ﻿@page "/ShipShop"
 
+        @if (message is not null)
+        {
+            <div class="modal @(message is null ? "" : "Show")" tabindex="-1"
+     role="dialog" style="display:@(message is null ? "none;" : "block;")">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                Failed
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>@message.Message</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
 <h3>ShipShop</h3>
 @using SpaceTraders.AvailableShips
 @using SpaceTraders.ErrorDto
@@ -7,7 +26,9 @@
 @inject AppState appState
 
 
+
 <h4>My Ships</h4>
+
 
 @if (shipsowned is not null)
 {
@@ -113,25 +134,6 @@
             </tbody>
         </table>
 
-        @if (message is not null)
-        {
-            <div class="modal @(message is null ? "" : "Show")" tabindex="-1"
-     role="dialog" style="display:@(message is null ? "none;" : "block;")">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                Failed
-                            </h5>
-                        </div>
-                        <div class="modal-body">
-                            <p>@message.Message</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-
     }
 
 
@@ -154,7 +156,7 @@
     
     private async Task BuyShip(string type, string location)
     {
-        Api.BuyShip(location, type);
+        message= await Api.BuyShip(location, type);
         appState.MyAccount = await Api.GetMyAccount();
     }
 }
