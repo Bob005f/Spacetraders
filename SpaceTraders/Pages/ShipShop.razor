@@ -92,7 +92,7 @@
         await base.OnInitializedAsync();
         availableShips = await Api.GetAvailableShips();
     }
-    private async Task BuyShip(string location, string type)
+    private async Task BuyShip(string type, string location)
     {
         Api.BuyShip(location, type);
         appState.MyAccount = await Api.GetMyAccount();
