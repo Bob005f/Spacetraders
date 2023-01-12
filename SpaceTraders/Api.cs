@@ -59,7 +59,7 @@ namespace SpaceTraders
         public static async Task<MyShipsDTO> GetMyShips()
         {
             HttpResponseMessage response = await
-              _httpClient.GetAsync($"my/ships?$token{Token}");
+              _httpClient.GetAsync($"my/ships?{Token}");
             return await response.Content.ReadFromJsonAsync<MyShipsDTO>();
         }
 

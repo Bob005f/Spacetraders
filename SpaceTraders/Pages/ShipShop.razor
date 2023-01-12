@@ -144,6 +144,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
         availableShips = await Api.GetAvailableShips();
 
         shipsowned = await Api.GetMyShips();
