@@ -5,6 +5,7 @@ using SpaceTraders.LoanedLoans;
 using System.Net.NetworkInformation;
 using SpaceTraders.AvailableShips;
 using SpaceTraders.ErrorDto;
+using SpaceTraders.ShipsOwned;
 
 namespace SpaceTraders
 {
@@ -54,7 +55,16 @@ namespace SpaceTraders
         _httpClient.GetAsync($"Systems/OE/ship-listings?{Token}");
       return await response.Content.ReadFromJsonAsync<AvailableShipsDTO>();
     }
-    public static async Task<MessageDto> BuyShip(string location, string type)
+
+        public static async Task<MyShipsDTO> GetMyShips()
+        {
+            HttpResponseMessage response = await
+              _httpClient.GetAsync($"my/ships?$token{Token}");
+            return await response.Content.ReadFromJsonAsync<MyShipsDTO>();
+        }
+
+
+        public static async Task<MessageDto> BuyShip(string location, string type)
     {
 
       HttpResponseMessage response = await

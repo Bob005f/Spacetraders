@@ -3,102 +3,157 @@
 <h3>ShipShop</h3>
 @using SpaceTraders.AvailableShips
 @using SpaceTraders.ErrorDto
+@using SpaceTraders.ShipsOwned
 @inject AppState appState
 
 
+<h4>My Ships</h4>
 
-
-<h4>Available Ships</h4>
-
-@if (availableShips is not null)
+@if (shipsowned is not null)
 {
     <table class="table">
-      <thead>
-        <tr>
-          <th class="text-center">Type</th>
-          <th class="text-center">Class</th>
-          <th class="text-center">Speed</th>
-          <th class="text-center">Max.Cargo</th>
-          <th class="text-center">Loading Speed</th>
-          <th class="text-center">Weapons</th>
-          <th class="text-center">Plating</th>
-          <th class="text-center">Price</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-            @foreach (ShipListing shipListing in availableShips.ShipListings)
-            {
-                
+        <thead>
             <tr>
-              <td class="text-center">
-                        @shipListing.Type
-              </td>
-              <td class="text-center">
-                        @shipListing.Class
-              </td>
-              <td class="text-center">
-                        @shipListing.Speed
-              </td>
-              <td class="text-center">
-                        @shipListing.MaxCargo
-              </td>
-              <td class="text-center">
-                        @shipListing.LoadingSpeed
-              </td>
-              <td class="text-center">
-                        @shipListing.Weapons
-              </td>
-              <td class="text-center">
-                        @shipListing.Plating
-              </td>
-              <td class="text-center">
-                        @shipListing.PurchaseLocations.Min(p => p.Price)
-              </td>
-              <td class="text-center">
-                <button class="btn btn-primary" @onclick="() => BuyShip(shipListing.Type, shipListing.PurchaseLocations.Min(l => l.Location))">Buy</button>
-              </td>
+                <th class="text-center">Type</th>
+                <th class="text-center">Class</th>
+                <th class="text-center">Speed</th>
+                <th class="text-center">Max.Cargo</th>
+                <th class="text-center">Loading Speed</th>
+                <th class="text-center">Weapons</th>
+                <th class="text-center">Plating</th>
+                <th></th>
             </tr>
-            }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+            @foreach (Ships Ship in shipsowned.Ship)
+            {
 
-    @if (message is not null)
-    {
-        <div class="modal @(message is null ? "" : "Show")" tabindex="-1"
-     role="dialog" style="display:@(message is null ? "none;" : "block;")">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">
-                  Failed
-                </h5>
-              </div>
-              <div class="modal-body">
-                <p>@message.Message</p>
-              </div>
-            </div>
-          </div>
-        </div>
-    }
+                <tr>
+                    <td class="text-center">
+                        @Ship.Type
+                    </td>
+                    <td class="text-center">
+                        @Ship.Class
+                    </td>
+                    <td class="text-center">
+                        @Ship.Speed
+                    </td>
+                    <td class="text-center">
+                        @Ship.MaxCargo
+                    </td>
+                    <td class="text-center">
+                        @Ship.LoadingSpeed
+                    </td>
+                    <td class="text-center">
+                        @Ship.Weapons
+                    </td>
+                    <td class="text-center">
+                        @Ship.Plating
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 }
+
+
+    <h4>Available Ships</h4>
+
+    @if (availableShips is not null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Class</th>
+                    <th class="text-center">Speed</th>
+                    <th class="text-center">Max.Cargo</th>
+                    <th class="text-center">Loading Speed</th>
+                    <th class="text-center">Weapons</th>
+                    <th class="text-center">Plating</th>
+                    <th class="text-center">Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ShipListing shipListing in availableShips.ShipListings)
+                {
+
+                    <tr>
+                        <td class="text-center">
+                            @shipListing.Type
+                        </td>
+                        <td class="text-center">
+                            @shipListing.Class
+                        </td>
+                        <td class="text-center">
+                            @shipListing.Speed
+                        </td>
+                        <td class="text-center">
+                            @shipListing.MaxCargo
+                        </td>
+                        <td class="text-center">
+                            @shipListing.LoadingSpeed
+                        </td>
+                        <td class="text-center">
+                            @shipListing.Weapons
+                        </td>
+                        <td class="text-center">
+                            @shipListing.Plating
+                        </td>
+                        <td class="text-center">
+                            @shipListing.PurchaseLocations.Min(p => p.Price)
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-primary" @onclick="() => BuyShip(shipListing.Type, shipListing.PurchaseLocations.Min(l => l.Location))">Buy</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (message is not null)
+        {
+            <div class="modal @(message is null ? "" : "Show")" tabindex="-1"
+     role="dialog" style="display:@(message is null ? "none;" : "block;")">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                Failed
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>@message.Message</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+
+
 @code {
-    AvailableShipsDTO? availableShips;
-    MessageDto message;
+        AvailableShipsDTO? availableShips;
+        MessageDto message;
+        MyShipsDTO? shipsowned;
 
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         availableShips = await Api.GetAvailableShips();
+
+        shipsowned = await Api.GetMyShips();
+
+
     }
+    
     private async Task BuyShip(string type, string location)
     {
         Api.BuyShip(location, type);
         appState.MyAccount = await Api.GetMyAccount();
-
-
-
-
     }
 }
