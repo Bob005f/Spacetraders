@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
 using SpaceTraders.LoanedLoans;
+using System.Text.Json.Serialization;
 
 namespace SpaceTraders.ShipsOwned
 {
     public class MyShipsDTO
     {
-            [JsonProperty("ships")]
+            [JsonPropertyName("ships")]
             public Ships[] Ship { get; set; }
         
     }
